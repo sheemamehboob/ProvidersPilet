@@ -1,0 +1,63 @@
+﻿@page "/providers"
+@using ProvidersPilet.Services
+@using Syncfusion.Blazor.Grids
+
+<PageTitle>HealthCare Providers</PageTitle>
+
+<h1>HealthCare Providers</h1>
+
+@if (healthCareProviders == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Provider ID</th>
+                <th>Provider Name</th>
+                <th>Description</th>
+                <th>Location</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var provider in healthCareProviders)
+            {
+                <tr>
+                    <td>@provider.ProviderId</td>
+                    <td>@provider.Name</td>
+                    <td>@provider.Description</td>
+                    <td>@provider.location</td>
+                     <td>@provider.PhoneNumber</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @*<SfGrid DataSource="@healthCareProviders">
+    <GridColumns>
+        <GridColumn Field=@nameof(HealthCareProvider.ProviderId) HeaderText="ID"></GridColumn>
+        <GridColumn Field=@nameof(HealthCareProvider.Name) HeaderText="Provider Name"></GridColumn>
+        <GridColumn Field=@nameof(HealthCareProvider.Description) HeaderText="Description"></GridColumn>
+        <GridColumn Field=@nameof(HealthCareProvider.location) HeaderText="Location"></GridColumn>
+        <GridColumn Field=@nameof(HealthCareProvider.PhoneNumber) HeaderText="Phone Number"></GridColumn>
+    </GridColumns>
+    </SfGrid> *@   
+}
+
+@code {
+
+    public List<HealthCareProvider> healthCareProviders { get; set; }
+
+    [Inject]
+    public IHealthCareProviderService healthCareProviderService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        healthCareProviders =  (await healthCareProviderService.GetAllHealthCareProvidersAsync()).ToList();
+    }
+
+}
